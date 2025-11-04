@@ -1,0 +1,2808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated 5-Day DLL Generator for All Grade Levels</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font family -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdf4; /* Light green background */
+        }
+        #lesson-plan-output {
+            max-height: 80vh;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        input:focus, textarea:focus, select:focus {
+            --tw-ring-color: #16a34a !important; /* Green-600 */
+        }
+        .prelim-activities-cell {
+            min-width: 250px;
+            max-width: 250px;
+            word-break: break-word;
+            font-size: 0.8rem;
+            padding: 8px;
+            line-height: 1.4;
+            background-color: #f0fdf4; /* Light green background */
+            border-right: 1px solid #bbf7d0;
+        }
+        .api-key-stored {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+        }
+        .school-logo {
+            border: 2px solid #16a34a;
+            padding: 20px;
+            background: white;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .logo-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #166534;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .logo-subtitle {
+            font-size: 0.9rem;
+            color: #15803d;
+            margin-bottom: 5px;
+        }
+        .logo-year {
+            font-weight: bold;
+            color: #16a34a;
+            font-size: 1rem;
+        }
+        .logo-divider {
+            border-top: 1px solid #16a34a;
+            margin: 8px 0;
+        }
+        .assessment-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background-color: white;
+        }
+        .assessment-options {
+            margin-left: 20px;
+        }
+        .assessment-option {
+            margin: 5px 0;
+        }
+        .rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .rubric-table th, .rubric-table td {
+            border: 1px solid #d1d5db;
+            padding: 10px;
+            text-align: left;
+        }
+        .rubric-table th {
+            background-color: #f3f4f6;
+            font-weight: bold;
+        }
+        .daily-assessment-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .context-settings {
+            background-color: #fef7cd;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .context-setting-item {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .context-setting-item:last-child {
+            margin-bottom: 0;
+        }
+        .context-bullet {
+            color: #d97706;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        .weekly-assessment-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 1024px) {
+            .weekly-assessment-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .language-toggle {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .language-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .language-option.active {
+            border-color: #16a34a;
+            background-color: #dcfce7;
+            color: #166534;
+            font-weight: bold;
+        }
+        .language-option:hover {
+            border-color: #16a34a;
+        }
+        .subscription-plan {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        .subscription-plan:hover {
+            border-color: #16a34a;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .subscription-plan.popular {
+            border-color: #16a34a;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <!-- School Logo Header -->
+        <header class="mb-8 text-center">
+            <div class="school-logo rounded-lg shadow-md">
+                <div class="logo-title">For All the Subjects in Both Junior and Senior High Schools</div>
+                <div class="logo-divider"></div>
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div class="text-center">
+                    </div>
+                </div>
+            </div>
+            <h1 class="text-2xl font-bold text-green-800 mt-6 mb-2">Automated 5-Day DLL Generator</h1>
+            <p class="text-sm font-medium text-gray-500 mt-2">Built by Melanio R. Florino Jr., Master Teacher 1, Pablo Lorenzo National High School</p>
+        </header>
+
+        <!-- Subscription Access System -->
+        <div id="subscription-gate" class="bg-white p-6 rounded-xl shadow-lg mb-8 border border-blue-200">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-blue-800 mb-2">DLL Pro Generator</h2>
+                <p class="text-gray-600">Enter your access key to use the generator</p>
+            </div>
+            
+            <div class="max-w-md mx-auto">
+                <div class="mb-4">
+                    <label for="access-key-input" class="block text-sm font-medium text-blue-700 mb-2">
+                        Access Key
+                    </label>
+                    <input type="text" id="access-key-input" 
+                        class="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Enter your subscription access key">
+                </div>
+                
+                <button id="verify-access-button" 
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+                    Verify & Access Generator
+                </button>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-gray-600 mb-4">Don't have an access key?</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="subscription-plan">
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <p class="font-bold text-green-800 text-lg">30 Days</p>
+                                <p class="text-2xl font-bold text-green-600">₱299</p>
+                                <p class="text-sm text-green-700">Perfect for trying out</p>
+                            </div>
+                        </div>
+                        <div class="subscription-plan popular">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <p class="font-bold text-blue-800 text-lg">60 Days</p>
+                                <p class="text-2xl font-bold text-blue-600">₱499</p>
+                                <p class="text-sm text-blue-700">Save ₱99!</p>
+                                <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded-full">POPULAR</span>
+                            </div>
+                        </div>
+                        <div class="subscription-plan">
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <p class="font-bold text-purple-800 text-lg">90 Days</p>
+                                <p class="text-2xl font-bold text-purple-600">₱699</p>
+                                <p class="text-sm text-purple-700">Save ₱198!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="subscribe-button" 
+                        class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+                        Subscribe Now via GCash
+                    </button>
+                    <p class="text-xs text-gray-500 mt-3">
+                        After payment, you'll receive your access key within 24 hours
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Key Setup Section (Shows only if no API key is stored) -->
+        <div id="api-key-setup" class="bg-white p-6 rounded-xl shadow-lg mb-8 border border-green-200 hidden">
+            <h2 class="text-xl font-semibold text-green-700 mb-4">API Key Setup</h2>
+            <div class="mb-4 p-4 bg-green-50 rounded-lg border border-green-200">
+                <label for="initial-api-key-input" class="block text-sm font-medium text-green-800 mb-1">
+                    Gemini API Key <span class="text-red-500">*</span>
+                </label>
+                <input type="password" id="initial-api-key-input" required
+                    class="w-full px-3 py-2 border border-green-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 bg-white"
+                    placeholder="Enter your Google Gemini API key">
+                <p class="text-xs text-green-700 mt-2">
+                    🔒 <strong>Secure:</strong> Your API key will be stored locally on this computer only. 
+                    <a href="https://aistudio.google.com/app/apikey" class="text-green-600 hover:underline font-medium" target="_blank">
+                        Get your free API key here
+                    </a>
+                </p>
+            </div>
+            <button id="save-api-key-button"
+                class="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out">
+                Save API Key to This Computer
+            </button>
+        </div>
+
+        <!-- Main Application Container (Hidden until API key is set) -->
+        <div id="main-application" class="hidden">
+
+            <!-- Subscription Status Bar -->
+            <div id="subscription-status" class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-blue-800">Subscription Active</h3>
+                        <p class="text-sm text-blue-600" id="subscription-expiry">Expires: Loading...</p>
+                    </div>
+                    <button id="manage-subscription-button" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        Manage Subscription
+                    </button>
+                </div>
+            </div>
+
+            <!-- School Context Settings Section -->
+            <div class="context-settings mb-8">
+                <h2 class="text-lg font-bold text-amber-800 mb-3">School Context Settings</h2>
+                <p class="text-sm text-amber-700 mb-3">These settings will inform all lesson plan generation to ensure activities are appropriate for your specific teaching environment.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <div class="context-setting-item">
+                            <span class="context-bullet">•</span>
+                            <span><strong>School Type:</strong> Public School</span>
+                        </div>
+                        <div class="context-setting-item">
+                            <span class="context-bullet">•</span>
+                            <span><strong>Student Grouping:</strong> Homogenous Group</span>
+                        </div>
+                        <div class="context-setting-item">
+                            <span class="context-bullet">•</span>
+                            <span><strong>Classroom Space:</strong> Limited space for 50 students to move freely</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="context-setting-item">
+                            <span class="context-bullet">•</span>
+                            <span><strong>Internet Access:</strong> Only 5 students can access via prepaid data (not daily)</span>
+                        </div>
+                        <div class="context-setting-item">
+                            <span class="context-bullet">•</span>
+                            <span><strong>Library Resources:</strong> No library, reliance on self-learning modules</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input and Control Panel -->
+            <div class="bg-white p-6 rounded-xl shadow-lg mb-8 border border-green-200">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-green-700">Lesson Parameters</h2>
+                    <div class="text-sm text-green-600 bg-green-50 px-3 py-1 rounded-full flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                        API Key Ready
+                    </div>
+                </div>
+                <form id="lesson-form" onsubmit="generateLessonPlan(event)">
+
+                    <!-- Subject and Grade Level Inputs -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="col-span-1">
+                            <label for="subject-input" class="block text-sm font-medium text-green-700 mb-1">
+                                Subject <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="subject-input" required
+                                class="w-full px-3 py-2 border border-green-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                                placeholder="e.g., General Mathematics, Oral Communication, Earth Science">
+                        </div>
+                        
+                        <div class="col-span-1">
+                            <label for="grade-level-input" class="block text-sm font-medium text-green-700 mb-1">
+                                Grade Level
+                            </label>
+                            <select id="grade-level-input" required
+                                class="w-full px-3 py-2 border border-green-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                                <option value="">Select Grade Level</option>
+                                <option value="Grade 4">Grade 4</option>
+                                <option value="Grade 5">Grade 5</option>
+                                <option value="Grade 6">Grade 6</option>
+                                <option value="Grade 7">Grade 7</option>
+                                <option value="Grade 8">Grade 8</option>
+                                <option value="Grade 9">Grade 9</option>
+                                <option value="Grade 10">Grade 10</option>
+                                <option value="Grade 11">Grade 11</option>
+                                <option value="Grade 12">Grade 12</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Quarter Selection -->
+                    <div class="mb-4">
+                        <label for="quarter-input" class="block text-sm font-medium text-green-700 mb-1">
+                            Quarter
+                        </label>
+                        <select id="quarter-input" required
+                            class="w-full px-3 py-2 border border-green-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                            <option value="">Select Quarter</option>
+                            <option value="First Quarter">First Quarter</option>
+                            <option value="Second Quarter">Second Quarter</option>
+                            <option value="Third Quarter">Third Quarter</option>
+                            <option value="Fourth Quarter">Fourth Quarter</option>
+                        </select>
+                    </div>
+
+                    <!-- Language Selection -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-green-700 mb-1">
+                            Medium of Instruction
+                        </label>
+                        <div class="language-toggle">
+                            <div class="language-option active" data-language="english">
+                                English
+                            </div>
+                            <div class="language-option" data-language="filipino">
+                                Filipino
+                            </div>
+                        </div>
+                        <input type="hidden" id="language-input" value="english">
+                    </div>
+
+                    <!-- 1. Content Standard -->
+                    <div class="mb-4">
+                        <label for="content-standard" class="block text-sm font-medium text-green-700 mb-1">
+                            1. Content Standard
+                        </label>
+                        <textarea id="content-standard" rows="2" required
+                            class="w-full px-3 py-2 border border-green-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                            placeholder="e.g., The learner demonstrates understanding of..."></textarea>
+                    </div>
+
+                    <!-- 2. Performance Standard -->
+                    <div class="mb-4">
+                        <label for="performance-standard" class="block text-sm font-medium text-green-700 mb-1">
+                            2. Performance Standard
+                        </label>
+                        <textarea id="performance-standard" rows="2" required
+                            class="w-full px-3 py-2 border border-green-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                            placeholder="e.g., The learner is able to..."></textarea>
+                    </div>
+                    
+                    <!-- 3. Learning Competency -->
+                    <div class="mb-6">
+                        <label for="learning-competency" class="block text-sm font-medium text-green-700 mb-1">
+                            3. Learning Competency - Weekly Focus
+                        </label>
+                        <textarea id="learning-competency" rows="3" required
+                            class="w-full px-3 py-2 border border-green-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                            placeholder="e.g., Describe how communication is affected by media and information (MIL11/12IMIL-IIIa-1)"></textarea>
+                        <p class="text-xs text-green-600 mt-1">
+                            *AI will automatically generate the Lesson Topic based on all inputs.
+                        </p>
+                    </div>
+                    
+                    <!-- Generate and Download Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button type="submit" id="generate-button"
+                            class="flex-1 flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out disabled:bg-green-400">
+                            <svg id="spinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span id="button-text">Generate 5-Day Lesson Plan</span>
+                        </button>
+
+                        <button type="button" id="download-word-button" onclick="convertToWord()"
+                            class="flex-1 flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition duration-150 ease-in-out hidden disabled:bg-emerald-400">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            Download as MS Word
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Notification/Message Area -->
+            <div id="message-box" class="hidden p-4 mb-6 text-sm rounded-xl bg-red-100 text-red-700 border border-red-200" role="alert"></div>
+
+            <!-- Lesson Plan Output Area -->
+            <div id="lesson-plan-container" class="bg-white p-6 rounded-xl shadow-2xl border border-green-300 hidden">
+                <div id="lesson-plan-output" class="relative">
+                    <!-- Content will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Daily Assessments Output Area -->
+            <div id="daily-assessments-container" class="bg-white p-6 rounded-xl shadow-2xl border border-green-300 hidden mt-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-green-800">Daily Formative Assessments</h2>
+                    <div class="flex items-center gap-4">
+                        <select id="day-select" class="px-4 py-2 border border-green-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                            <option value="monday">Monday</option>
+                            <option value="tuesday">Tuesday</option>
+                            <option value="wednesday">Wednesday</option>
+                            <option value="thursday">Thursday</option>
+                            <option value="friday">Friday</option>
+                        </select>
+                        <button id="print-daily-assessment-button" onclick="printDailyAssessment()"
+                            class="flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                            </svg>
+                            Print Daily Assessment
+                        </button>
+                    </div>
+                </div>
+                <div id="daily-assessments-output" class="relative">
+                    <!-- Daily assessments content will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Weekly Formative Assessment Output Area -->
+            <div id="weekly-assessment-container" class="bg-white p-6 rounded-xl shadow-2xl border border-green-300 hidden mt-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-green-800">Weekly Formative Assessment</h2>
+                    <button id="print-weekly-assessment-button" onclick="printWeeklyAssessment()"
+                        class="flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-150 ease-in-out">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                        </svg>
+                        Print Weekly Assessment
+                    </button>
+                </div>
+                <div id="weekly-assessment-output" class="relative">
+                    <!-- Weekly assessment content will be rendered here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subscription Modal -->
+    <div id="subscription-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-blue-800">Subscribe to DLL Pro</h3>
+                <button id="close-modal-button" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <p class="text-gray-600">To subscribe, please follow these steps:</p>
+                <ol class="list-decimal list-inside space-y-2 text-sm text-gray-700">
+                    <li>Send payment via GCash to: <strong class="text-green-600">0917-XXX-XXXX</strong></li>
+                    <li>Include your <strong>Full Name</strong> and <strong>Email Address</strong> in the message</li>
+                    <li>Wait for your access key to be delivered within 24 hours</li>
+                </ol>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                    <p class="text-sm text-yellow-800">
+                        <strong>Note:</strong> Your subscription will be activated once payment is confirmed.
+                    </p>
+                </div>
+                <button id="close-modal-confirm" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+                    I Understand
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Subscription Management System
+        const SUBSCRIPTION_STORAGE_KEY = 'dll_pro_subscription';
+        const API_KEY_STORAGE_KEY = 'pablo_lorenzo_dll_generator_api_key';
+
+        // Check subscription status on load
+        function checkSubscription() {
+            const subscription = localStorage.getItem(SUBSCRIPTION_STORAGE_KEY);
+            if (subscription) {
+                const subData = JSON.parse(subscription);
+                if (new Date(subData.expiry) > new Date()) {
+                    // Valid subscription
+                    document.getElementById('subscription-gate').classList.add('hidden');
+                    document.getElementById('api-key-setup').classList.remove('hidden');
+                    
+                    // Check if API key is already stored
+                    const storedApiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
+                    if (storedApiKey) {
+                        document.getElementById('api-key-setup').classList.add('hidden');
+                        document.getElementById('main-application').classList.remove('hidden');
+                        updateSubscriptionStatus(subData);
+                    }
+                    return true;
+                } else {
+                    // Expired subscription
+                    showSubscriptionMessage('Your subscription has expired. Please renew to continue using the generator.');
+                    localStorage.removeItem(SUBSCRIPTION_STORAGE_KEY);
+                }
+            }
+            return false;
+        }
+
+        // Update subscription status display
+        function updateSubscriptionStatus(subData) {
+            const expiryDate = new Date(subData.expiry);
+            const daysLeft = Math.ceil((expiryDate - new Date()) / (1000 * 60 * 60 * 24));
+            
+            document.getElementById('subscription-expiry').textContent = 
+                `Expires: ${expiryDate.toLocaleDateString()} (${daysLeft} days remaining)`;
+            
+            if (daysLeft <= 7) {
+                document.getElementById('subscription-status').classList.add('bg-yellow-50', 'border-yellow-200');
+                document.getElementById('subscription-status').classList.remove('bg-blue-50', 'border-blue-200');
+            }
+        }
+
+        // Verify access key
+        document.getElementById('verify-access-button').addEventListener('click', function() {
+            const accessKey = document.getElementById('access-key-input').value.trim();
+            
+            if (!accessKey) {
+                showSubscriptionMessage('Please enter your access key.');
+                return;
+            }
+            
+            // Simulate server verification
+            verifyAccessKey(accessKey).then(isValid => {
+                if (isValid) {
+                    // Store subscription data
+                    const subscriptionData = {
+                        accessKey: accessKey,
+                        expiry: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+                        activated: new Date()
+                    };
+                    
+                    localStorage.setItem(SUBSCRIPTION_STORAGE_KEY, JSON.stringify(subscriptionData));
+                    document.getElementById('subscription-gate').classList.add('hidden');
+                    document.getElementById('api-key-setup').classList.remove('hidden');
+                    showSubscriptionMessage('Access granted! Please set up your API key to continue.', 'success');
+                } else {
+                    showSubscriptionMessage('Invalid access key. Please check and try again.');
+                }
+            });
+        });
+
+        // Subscription purchase flow
+        document.getElementById('subscribe-button').addEventListener('click', function() {
+            document.getElementById('subscription-modal').classList.remove('hidden');
+        });
+
+        // Close modal buttons
+        document.getElementById('close-modal-button').addEventListener('click', function() {
+            document.getElementById('subscription-modal').classList.add('hidden');
+        });
+
+        document.getElementById('close-modal-confirm').addEventListener('click', function() {
+            document.getElementById('subscription-modal').classList.add('hidden');
+        });
+
+        // Manage subscription button
+        document.getElementById('manage-subscription-button').addEventListener('click', function() {
+            localStorage.removeItem(SUBSCRIPTION_STORAGE_KEY);
+            document.getElementById('main-application').classList.add('hidden');
+            document.getElementById('subscription-gate').classList.remove('hidden');
+            showSubscriptionMessage('You have been logged out. Enter your access key to continue.', 'success');
+        });
+
+        function showSubscriptionMessage(message, type = 'error') {
+            // Remove any existing messages
+            const existingMessage = document.querySelector('#subscription-gate .message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `p-4 mb-4 rounded-lg ${
+                type === 'success' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'
+            } message`;
+            messageDiv.textContent = message;
+            
+            document.getElementById('subscription-gate').appendChild(messageDiv);
+            
+            // Auto-remove success messages
+            if (type === 'success') {
+                setTimeout(() => messageDiv.remove(), 5000);
+            }
+        }
+
+        // Simulate server-side verification
+        async function verifyAccessKey(accessKey) {
+            // In a real implementation, this would call your backend
+            // For demo purposes, we'll simulate with localStorage
+            const validKeys = JSON.parse(localStorage.getItem('admin_access_keys') || '{}');
+            
+            // Check if key exists and is not expired
+            if (validKeys[accessKey]) {
+                const keyData = validKeys[accessKey];
+                return new Date(keyData.expiry) > new Date() && keyData.status === 'active';
+            }
+            
+            // For demo, accept any key starting with "DLL-"
+            if (accessKey.startsWith('DLL-')) {
+                // Store demo key
+                const demoKeys = JSON.parse(localStorage.getItem('admin_access_keys') || '{}');
+                demoKeys[accessKey] = {
+                    created: new Date(),
+                    expiry: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+                    duration: 30,
+                    status: 'active'
+                };
+                localStorage.setItem('admin_access_keys', JSON.stringify(demoKeys));
+                return true;
+            }
+            
+            return false;
+        }
+
+        // Initialize subscription check
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!checkSubscription()) {
+                document.getElementById('subscription-gate').classList.remove('hidden');
+            }
+        });
+
+        // API Configuration
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=";
+        
+        // Elements
+        const apiKeySetup = document.getElementById('api-key-setup');
+        const mainApplication = document.getElementById('main-application');
+        const initialApiKeyInput = document.getElementById('initial-api-key-input');
+        const saveApiKeyButton = document.getElementById('save-api-key-button');
+        const form = document.getElementById('lesson-form');
+        const subjectInput = document.getElementById('subject-input');
+        const gradeLevelInput = document.getElementById('grade-level-input');
+        const quarterInput = document.getElementById('quarter-input');
+        const languageInput = document.getElementById('language-input');
+        const contentStandardInput = document.getElementById('content-standard');
+        const performanceStandardInput = document.getElementById('performance-standard');
+        const learningCompetencyInput = document.getElementById('learning-competency');
+        const generateButton = document.getElementById('generate-button');
+        const buttonText = document.getElementById('button-text');
+        const spinner = document.getElementById('spinner');
+        const messageBox = document.getElementById('message-box');
+        const lessonPlanContainer = document.getElementById('lesson-plan-container');
+        const lessonPlanOutput = document.getElementById('lesson-plan-output');
+        const downloadWordButton = document.getElementById('download-word-button');
+        const dailyAssessmentsContainer = document.getElementById('daily-assessments-container');
+        const dailyAssessmentsOutput = document.getElementById('daily-assessments-output');
+        const daySelect = document.getElementById('day-select');
+        const printDailyAssessmentButton = document.getElementById('print-daily-assessment-button');
+        const weeklyAssessmentContainer = document.getElementById('weekly-assessment-container');
+        const weeklyAssessmentOutput = document.getElementById('weekly-assessment-output');
+        const printWeeklyAssessmentButton = document.getElementById('print-weekly-assessment-button');
+
+        // Global storage for the generated data
+        window.latestLessonData = null; 
+        window.latestDailyAssessments = null;
+        window.latestWeeklyAssessment = null;
+
+        // Check if API key is already stored
+        function checkStoredApiKey() {
+            const storedApiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
+            if (storedApiKey) {
+                // Hide API key setup and show main application
+                apiKeySetup.classList.add('hidden');
+                mainApplication.classList.remove('hidden');
+                return storedApiKey;
+            }
+            return null;
+        }
+
+        // Get API key from localStorage
+        function getApiKey() {
+            return localStorage.getItem(API_KEY_STORAGE_KEY);
+        }
+
+        // Save API key to localStorage
+        function saveApiKey() {
+            const apiKey = initialApiKeyInput.value.trim();
+            if (!apiKey) {
+                showMessage('error', 'Please enter a valid API key.');
+                return;
+            }
+            
+            localStorage.setItem(API_KEY_STORAGE_KEY, apiKey);
+            initialApiKeyInput.value = '';
+            
+            // Show success message and switch to main application
+            showMessage('success', 'API key saved successfully! This application is now ready to use on this computer.');
+            setTimeout(() => {
+                apiKeySetup.classList.add('hidden');
+                mainApplication.classList.remove('hidden');
+                
+                // Update subscription status
+                const subscription = localStorage.getItem(SUBSCRIPTION_STORAGE_KEY);
+                if (subscription) {
+                    updateSubscriptionStatus(JSON.parse(subscription));
+                }
+            }, 1500);
+        }
+
+        // Utility Functions
+        function showLoading(isLoading) {
+            generateButton.disabled = isLoading;
+            spinner.classList.toggle('hidden', !isLoading);
+            buttonText.textContent = isLoading ? 'Generating...' : 'Generate 5-Day Lesson Plan';
+        }
+
+        function showMessage(type, message) {
+            messageBox.textContent = message;
+            messageBox.className = 'p-4 mb-6 text-sm rounded-xl border';
+            if (type === 'error') {
+                messageBox.classList.add('bg-red-100', 'text-red-700', 'border-red-200');
+            } else if (type === 'success') {
+                messageBox.classList.add('bg-green-100', 'text-green-700', 'border-green-200');
+            }
+            messageBox.classList.remove('hidden');
+            
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    messageBox.classList.add('hidden');
+                }, 5000);
+            }
+        }
+
+        function hideMessage() {
+            messageBox.classList.add('hidden');
+        }
+
+        // Language Selection Functionality
+        function setupLanguageSelection() {
+            const languageOptions = document.querySelectorAll('.language-option');
+            
+            languageOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    languageOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Update hidden input value
+                    const selectedLanguage = this.getAttribute('data-language');
+                    languageInput.value = selectedLanguage;
+                    
+                    // Update button text based on language
+                    updateGenerateButtonText(selectedLanguage);
+                });
+            });
+        }
+
+        function updateGenerateButtonText(language) {
+            if (language === 'filipino') {
+                buttonText.textContent = 'Bumuo ng 5-Araw na Lesson Plan';
+            } else {
+                buttonText.textContent = 'Generate 5-Day Lesson Plan';
+            }
+        }
+
+        // JSON Schema for DLL
+        const JSON_SCHEMA = {
+            "type": "OBJECT",
+            "properties": {
+                "WeeklyStandards": {
+                    "type": "OBJECT",
+                    "properties": {
+                        "ContentStandard": { "type": "STRING", "description": "Content Standard (Based on the given competency)" },
+                        "PerformanceStandard": { "type": "STRING", "description": "Performance Standard (Based on the given competency)" },
+                        "LearningCompetency": { "type": "STRING", "description": "Learning Competency (The specific code and statement, repeat the input if needed)" },
+                        "WeeklyTopic": { "type": "STRING", "description": "II. CONTENT - Lesson Topic" }
+                    },
+                    "propertyOrdering": ["ContentStandard", "PerformanceStandard", "LearningCompetency", "WeeklyTopic"]
+                },
+                "DailyLessons": {
+                    "type": "ARRAY",
+                    "items": {
+                        "type": "OBJECT",
+                        "properties": {
+                            "Day": { "type": "STRING", "enum": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"] },
+                            "DailyObjective": { "type": "STRING", "description": "I. OBJECTIVES - Lesson Objective (Specific to this day's focus)" },
+                            "Integration": { "type": "STRING", "description": "I. OBJECTIVES - INTEGRATION (e.g., ICT, English, Values Education)" },
+                            "Materials": { "type": "STRING", "description": "III. LEARNING RESOURCES - B. OTHER LEARNING RESOURCES (List specific materials)" },
+                            "Procedure": {
+                                "type": "OBJECT",
+                                "properties": {
+                                    "Drill": { "type": "STRING", "description": "A. DRILL/REVIEW (Short, quick activity)" },
+                                    "ReviewAndPresentation": { "type": "STRING", "description": "B. REVIEW OF PREVIOUS LESSON AND/OR INTRODUCTION OF NEW LESSON" },
+                                    "Examples": { "type": "STRING", "description": "C. ESTABLISHING A PURPOSE FOR THE LESSON" },
+                                    "Discussion1": { "type": "STRING", "description": "D. PRESENTING EXAMPLES/INSTANCES OF THE NEW LESSON" },
+                                    "Discussion2": { "type": "STRING", "description": "E. DISCUSSING NEW CONCEPTS AND PRACTICING NEW SKILLS #1" },
+                                    "DevelopingMastery": { "type": "STRING", "description": "F. DEVELOPING MASTERY (Leads to Formative Assessment)" },
+                                    "Generalization": { "type": "STRING", "description": "G. FINDING PRACTICAL APPLICATIONS OF CONCEPTS AND SKILLS IN DAILY LIVING" },
+                                    "Application": { "type": "STRING", "description": "H. MAKING GENERALIZATIONS AND ABSTRACTIONS ABOUT THE LESSON" },
+                                    "Evaluation": { "type": "STRING", "description": "I. EVALUATING LEARNING (Specific assessment activity/questions)" }
+                                },
+                                "propertyOrdering": ["Drill", "ReviewAndPresentation", "Examples", "Discussion1", "Discussion2", "DevelopingMastery", "Generalization", "Application", "Evaluation"]
+                            }
+                        },
+                        "propertyOrdering": ["Day", "DailyObjective", "Integration", "Materials", "Procedure"]
+                    },
+                    "description": "An array containing five distinct daily lessons (MONDAY to FRIDAY)."
+                }
+            },
+            "propertyOrdering": ["WeeklyStandards", "DailyLessons"]
+        };
+
+        // JSON Schema for Daily Assessments
+        const DAILY_ASSESSMENT_SCHEMA = {
+            "type": "OBJECT",
+            "properties": {
+                "DailyAssessments": {
+                    "type": "ARRAY",
+                    "items": {
+                        "type": "OBJECT",
+                        "properties": {
+                            "Day": { "type": "STRING", "enum": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"] },
+                            "DailyObjective": { "type": "STRING", "description": "The daily objective for this day" },
+                            "Assessment": {
+                                "type": "OBJECT",
+                                "properties": {
+                                    "Title": { "type": "STRING", "description": "Title of the daily assessment" },
+                                    "Instructions": { "type": "STRING", "description": "Instructions for the assessment" },
+                                    "Questions": {
+                                        "type": "ARRAY",
+                                        "items": {
+                                            "type": "OBJECT",
+                                            "properties": {
+                                                "QuestionNumber": { "type": "NUMBER", "description": "Question number from 1 to 10" },
+                                                "Question": { "type": "STRING", "description": "The question text" },
+                                                "Options": {
+                                                    "type": "OBJECT",
+                                                    "properties": {
+                                                        "A": { "type": "STRING", "description": "Option A" },
+                                                        "B": { "type": "STRING", "description": "Option B" },
+                                                        "C": { "type": "STRING", "description": "Option C" },
+                                                        "D": { "type": "STRING", "description": "Option D" }
+                                                    },
+                                                    "propertyOrdering": ["A", "B", "C", "D"]
+                                                },
+                                                "CorrectAnswer": { "type": "STRING", "enum": ["A", "B", "C", "D"], "description": "The correct answer" },
+                                                "QuestionType": { "type": "STRING", "enum": ["Multiple Choice", "Situational", "Application"], "description": "Type of question" }
+                                            },
+                                            "propertyOrdering": ["QuestionNumber", "Question", "Options", "CorrectAnswer", "QuestionType"]
+                                        }
+                                    },
+                                    "AnswerKey": {
+                                        "type": "ARRAY",
+                                        "items": {
+                                            "type": "OBJECT",
+                                            "properties": {
+                                                "QuestionNumber": { "type": "NUMBER" },
+                                                "CorrectAnswer": { "type": "STRING" }
+                                            },
+                                            "propertyOrdering": ["QuestionNumber", "CorrectAnswer"]
+                                        }
+                                    },
+                                    "Rubric": {
+                                        "type": "OBJECT",
+                                        "properties": {
+                                            "ScoreInterpretation": {
+                                                "type": "ARRAY",
+                                                "items": {
+                                                    "type": "OBJECT",
+                                                    "properties": {
+                                                        "ScoreRange": { "type": "STRING", "description": "Score range (e.g., 9-10)" },
+                                                        "ProficiencyLevel": { "type": "STRING", "description": "Proficiency level description" },
+                                                        "Interpretation": { "type": "STRING", "description": "What the score means" }
+                                                    },
+                                                    "propertyOrdering": ["ScoreRange", "ProficiencyLevel", "Interpretation"]
+                                                }
+                                            },
+                                            "GradingScale": {
+                                                "type": "STRING",
+                                                "description": "How to convert scores to grades"
+                                            }
+                                        },
+                                        "propertyOrdering": ["ScoreInterpretation", "GradingScale"]
+                                    }
+                                },
+                                "propertyOrdering": ["Title", "Instructions", "Questions", "AnswerKey", "Rubric"]
+                            }
+                        },
+                        "propertyOrdering": ["Day", "DailyObjective", "Assessment"]
+                    }
+                }
+            },
+            "propertyOrdering": ["DailyAssessments"]
+        };
+
+        // JSON Schema for Weekly Assessment
+        const WEEKLY_ASSESSMENT_SCHEMA = {
+            "type": "OBJECT",
+            "properties": {
+                "WeeklyAssessment": {
+                    "type": "OBJECT",
+                    "properties": {
+                        "Title": { "type": "STRING", "description": "Title of the weekly assessment" },
+                        "Instructions": { "type": "STRING", "description": "Instructions for the assessment" },
+                        "Questions": {
+                            "type": "ARRAY",
+                            "items": {
+                                "type": "OBJECT",
+                                "properties": {
+                                    "QuestionNumber": { "type": "NUMBER", "description": "Question number from 1 to 40" },
+                                    "Question": { "type": "STRING", "description": "The question text" },
+                                    "Options": {
+                                        "type": "OBJECT",
+                                        "properties": {
+                                            "A": { "type": "STRING", "description": "Option A" },
+                                            "B": { "type": "STRING", "description": "Option B" },
+                                            "C": { "type": "STRING", "description": "Option C" },
+                                            "D": { "type": "STRING", "description": "Option D" }
+                                        },
+                                        "propertyOrdering": ["A", "B", "C", "D"]
+                                    },
+                                    "CorrectAnswer": { "type": "STRING", "enum": ["A", "B", "C", "D"], "description": "The correct answer" },
+                                    "QuestionType": { "type": "STRING", "enum": ["Situational", "Personal", "Societal", "Global"], "description": "Type of question based on context" },
+                                    "PISADomain": { "type": "STRING", "description": "PISA 2024 Framework domain addressed" }
+                                },
+                                "propertyOrdering": ["QuestionNumber", "Question", "Options", "CorrectAnswer", "QuestionType", "PISADomain"]
+                            }
+                        },
+                        "AnswerKey": {
+                            "type": "ARRAY",
+                            "items": {
+                                "type": "OBJECT",
+                                "properties": {
+                                    "QuestionNumber": { "type": "NUMBER" },
+                                    "CorrectAnswer": { "type": "STRING" }
+                                },
+                                "propertyOrdering": ["QuestionNumber", "CorrectAnswer"]
+                            }
+                        },
+                        "Rubric": {
+                            "type": "OBJECT",
+                            "properties": {
+                                "ScoreRanges": {
+                                    "type": "ARRAY",
+                                    "items": {
+                                        "type": "OBJECT",
+                                        "properties": {
+                                            "Range": { "type": "STRING", "description": "Score range (e.g., 36-40)" },
+                                            "Description": { "type": "STRING", "description": "Description of performance level" },
+                                            "ProficiencyLevel": { "type": "STRING", "description": "Proficiency level (e.g., Advanced, Proficient, etc.)" }
+                                        },
+                                        "propertyOrdering": ["Range", "Description", "ProficiencyLevel"]
+                                    }
+                                },
+                                "GradingCriteria": {
+                                    "type": "ARRAY",
+                                    "items": {
+                                        "type": "OBJECT",
+                                        "properties": {
+                                            "Criterion": { "type": "STRING", "description": "Grading criterion" },
+                                            "Description": { "type": "STRING", "description": "Description of the criterion" }
+                                        },
+                                        "propertyOrdering": ["Criterion", "Description"]
+                                    }
+                                }
+                            },
+                            "propertyOrdering": ["ScoreRanges", "GradingCriteria"]
+                        }
+                    },
+                    "propertyOrdering": ["Title", "Instructions", "Questions", "AnswerKey", "Rubric"]
+                }
+            },
+            "propertyOrdering": ["WeeklyAssessment"]
+        };
+
+        // System Prompts for different languages
+        const SYSTEM_PROMPT_ENGLISH = `You are an expert curriculum specialist in the Philippines specializing in education from Grade 4 to Grade 12.
+        Your task is to generate a comprehensive, structured Daily Lesson Log (DLL) in ENGLISH for one full week (5 days) based on the provided Subject, Grade Level, Quarter, Content Standard, Performance Standard, and Learning Competency.
+        The weekly plan must follow a logical progression, with each daily lesson building towards the main competency.
+        You must strictly adhere to the provided JSON schema for the entire output.
+        ALL CONTENT MUST BE IN ENGLISH as these subjects use English as the medium of instruction.
+        The content must be appropriate for the specified Subject and Grade Level, written in a teaching style suitable for Filipino teachers.
+        For the WeeklyStandards, use the teacher's input directly for 'ContentStandard', 'PerformanceStandard', and 'LearningCompetency'.
+        Provide creative and specific activities for the 'Procedure' section that are relevant to the specified subject and grade level.
+
+        IMPORTANT: Consider the following school context when generating activities:
+        - This is a PUBLIC SCHOOL with limited resources
+        - Students are in HOMOGENOUS groups
+        - Classroom has LIMITED SPACE for 50 students to move freely
+        - Only 5 students have INTERNET ACCESS (via prepaid data, not daily)
+        - NO LIBRARY available, teachers and students rely on self-learning modules
+
+        Design activities that:
+        - Work within limited space constraints
+        - Do not require internet access for all students
+        - Can be completed with minimal resources
+        - Utilize self-learning modules effectively
+        - Are suitable for homogenous student groups
+        - Are age-appropriate for the specified grade level`;
+
+        const SYSTEM_PROMPT_FILIPINO = `Ikaw ay isang dalubhasa sa kurikulum sa Pilipinas na espesyalista sa edukasyon mula Grade 4 hanggang Grade 12.
+        Ang iyong gawain ay bumuo ng komprehensibo at istrukturang Daily Lesson Log (DLL) sa FILIPINO para sa isang buong linggo (5 araw) batay sa ibinigay na Subject, Grade Level, Quarter, Content Standard, Performance Standard, at Learning Competency.
+        Ang lingguhang plano ay dapat sumunod sa lohikal na pag-unlad, na ang bawat araw na aralin ay nagpapatungo sa pangunahing kompetensi.
+        Dapat kang mahigpit na sumunod sa ibinigay na JSON schema para sa buong output.
+        LAHAT NG KONTENTO AY DAPAT NASA FILIPINO dahil ang mga asignaturang ito ay gumagamit ng Filipino bilang midyum ng pagtuturo.
+        Ang nilalaman ay dapat na angkop para sa tinukoy na Subject at Grade Level, na nakasulat sa istilo ng pagtuturo na angkop para sa mga guro sa Pilipinas.
+        Para sa WeeklyStandards, gamitin ang input ng guro nang direkta para sa 'ContentStandard', 'PerformanceStandard', at 'LearningCompetency'.
+        Magbigay ng malikhain at tiyak na mga gawain para sa 'Procedure' section na may kaugnayan sa tinukoy na asignatura at antas ng baitang.
+
+        MAHALAGA: Isaalang-alang ang sumusunod na konteksto ng paaralan kapag bumubuo ng mga gawain:
+        - Ito ay isang PUBLIC SCHOOL na may limitadong mga mapagkukunan
+        - Ang mga mag-aaral ay nasa HOMOGENOUS na mga grupo
+        - Ang silid-aralan ay may LIMITADONG ESPASYO para sa 50 mag-aaral na malayang gumalaw
+        - 5 mag-aaral lamang ang may INTERNET ACCESS (sa pamamagitan ng prepaid data, hindi araw-araw)
+        - WALANG LIBRARY na available, ang mga guro at mag-aaral ay umaasa sa mga self-learning module
+
+        Magdisenyo ng mga gawain na:
+        - Gumagana sa loob ng limitadong mga hadlang sa espasyo
+        - Hindi nangangailangan ng access sa internet para sa lahat ng mag-aaral
+        - Maaring makumpleto gamit ang minimal na mga mapagkukunan
+        - Mahusay na gumagamit ng mga self-learning module
+        - Angkop para sa homogenous na mga grupo ng mag-aaral
+        - Naangkop sa edad para sa tinukoy na antas ng baitang`;
+
+        const DAILY_ASSESSMENT_SYSTEM_PROMPT_ENGLISH = `You are an expert assessment specialist creating daily formative assessments for Philippine schools.
+        Create a 10-item multiple choice assessment for each day of the week (Monday to Friday) based on the daily objectives.
+        Each assessment should:
+        - Have 10 high-quality multiple choice questions
+        - Directly assess the specific daily objective
+        - Include a mix of question types: factual, conceptual, and applied knowledge
+        - Provide clear instructions and a comprehensive rubric
+        - Include a complete answer key
+        - Be appropriate for the grade level and subject
+        All content must be in English and aligned with the daily learning objectives.
+
+        IMPORTANT: Consider the school context:
+        - Public school with limited resources
+        - Homogenous student groups
+        - Limited classroom space
+        - Minimal internet access
+        - No library, reliance on self-learning modules`;
+
+        const DAILY_ASSESSMENT_SYSTEM_PROMPT_FILIPINO = `Ikaw ay isang dalubhasa sa pagtatasa na lumilikha ng pang-araw-araw na formative assessments para sa mga paaralan sa Pilipinas.
+        Lumikha ng 10-item multiple choice assessment para sa bawat araw ng linggo (Lunes hanggang Biyernes) batay sa mga pang-araw-araw na layunin.
+        Ang bawat assessment ay dapat:
+        - Magkaroon ng 10 de-kalidad na multiple choice na mga tanong
+        - Direktang suriin ang tiyak na pang-araw-araw na layunin
+        - Magsama ng halo ng mga uri ng tanong: factual, konseptuwal, at inilapat na kaalaman
+        - Magbigay ng malinaw na mga tagubilin at komprehensibong rubric
+        - Magsama ng kumpletong answer key
+        - Maging angkop para sa antas ng baitang at asignatura
+        Ang lahat ng nilalaman ay dapat nasa Filipino at nakahanay sa mga pang-araw-araw na layunin sa pagkatuto.
+
+        MAHALAGA: Isaalang-alang ang konteksto ng paaralan:
+        - Pampublikong paaralan na may limitadong mga mapagkukunan
+        - Homogenous na mga grupo ng mag-aaral
+        - Limitadong espasyo sa silid-aralan
+        - Minimal na access sa internet
+        - Walang library, pag-asa sa mga self-learning module`;
+
+        const WEEKLY_ASSESSMENT_SYSTEM_PROMPT_ENGLISH = `You are an expert assessment specialist creating formative assessments based on PISA 2024 Framework.
+        Create a 40-item multiple choice quiz that covers all learning objectives from the 5-day lesson plan.
+        Include a mix of question types: situational (real-world scenarios), personal (self-reflection), societal (community impact), and global (international perspective).
+        Ensure questions align with PISA 2024 domains: reading literacy, mathematical literacy, scientific literacy, and global competence.
+        Provide a clear rubric for scoring and interpretation.
+        All content must be in English and appropriate for the specified grade level.
+
+        IMPORTANT: Consider the school context:
+        - Public school with limited resources
+        - Homogenous student groups
+        - Limited classroom space
+        - Minimal internet access
+        - No library, reliance on self-learning modules
+
+        Question Distribution:
+        - 10 situational questions (real-world scenarios)
+        - 10 personal questions (self-reflection and application)
+        - 10 societal questions (community and societal impact)
+        - 10 global questions (international perspective and global competence)
+
+        PISA 2024 Framework Domains to cover:
+        - Reading Literacy
+        - Mathematical Literacy  
+        - Scientific Literacy
+        - Global Competence
+        - Creative Thinking
+        - Learning in Digital World`;
+
+        const WEEKLY_ASSESSMENT_SYSTEM_PROMPT_FILIPINO = `Ikaw ay isang dalubhasa sa pagtatasa na lumilikha ng formative assessments batay sa PISA 2024 Framework.
+        Lumikha ng 40-item multiple choice quiz na sumasaklaw sa lahat ng mga layunin sa pagkatuto mula sa 5-araw na lesson plan.
+        Magsama ng halo ng mga uri ng tanong: situational (mga totoong-buhay na senaryo), personal (pagsusuri sa sarili), societal (epekto sa komunidad), at global (internasyonal na pananaw).
+        Tiyakin na ang mga tanong ay nakahanay sa mga domain ng PISA 2024: reading literacy, mathematical literacy, scientific literacy, at global competence.
+        Magbigay ng malinaw na rubric para sa pagmamarka at interpretasyon.
+        Ang lahat ng nilalaman ay dapat nasa Filipino at angkop para sa tinukoy na antas ng baitang.
+
+        MAHALAGA: Isaalang-alang ang konteksto ng paaralan:
+        - Pampublikong paaralan na may limitadong mga mapagkukunan
+        - Homogenous na mga grupo ng mag-aaral
+        - Limitadong espasyo sa silid-aralan
+        - Minimal na access sa internet
+        - Walang library, pag-asa sa mga self-learning module
+
+        Pamamahagi ng mga Tanong:
+        - 10 situational na mga tanong (mga totoong-buhay na senaryo)
+        - 10 personal na mga tanong (pagsusuri sa sarili at aplikasyon)
+        - 10 societal na mga tanong (epekto sa komunidad at lipunan)
+        - 10 global na mga tanong (internasyonal na pananaw at global na kompetensi)
+
+        Mga Domain ng PISA 2024 Framework na dapat saklawin:
+        - Reading Literacy
+        - Mathematical Literacy  
+        - Scientific Literacy
+        - Global Competence
+        - Creative Thinking
+        - Learning in Digital World`;
+
+        // Main generation function
+        window.generateLessonPlan = async function(event) {
+            event.preventDefault();
+            hideMessage();
+
+            // Check subscription first
+            const subscription = localStorage.getItem(SUBSCRIPTION_STORAGE_KEY);
+            if (!subscription) {
+                showMessage('error', 'Subscription required. Please enter your access key.');
+                document.getElementById('main-application').classList.add('hidden');
+                document.getElementById('subscription-gate').classList.remove('hidden');
+                return;
+            }
+
+            const subData = JSON.parse(subscription);
+            if (new Date(subData.expiry) <= new Date()) {
+                showMessage('error', 'Your subscription has expired. Please renew to continue using the generator.');
+                localStorage.removeItem(SUBSCRIPTION_STORAGE_KEY);
+                document.getElementById('main-application').classList.add('hidden');
+                document.getElementById('subscription-gate').classList.remove('hidden');
+                return;
+            }
+
+            const apiKey = getApiKey();
+            const subject = subjectInput.value.trim();
+            const gradeLevel = gradeLevelInput.value.trim();
+            const quarter = quarterInput.value.trim();
+            const language = languageInput.value;
+            const contentStandard = contentStandardInput.value.trim();
+            const performanceStandard = performanceStandardInput.value.trim();
+            const learningCompetency = learningCompetencyInput.value.trim();
+
+            if (!apiKey) {
+                showMessage('error', 'API key not found. Please set up your API key again.');
+                return;
+            }
+
+            if (!subject || !gradeLevel || !quarter || !contentStandard || !performanceStandard || !learningCompetency) {
+                showMessage('error', 'Please fill in all required information.');
+                return;
+            }
+
+            showLoading(true);
+            lessonPlanContainer.classList.add('hidden');
+            dailyAssessmentsContainer.classList.add('hidden');
+            weeklyAssessmentContainer.classList.add('hidden');
+            lessonPlanOutput.innerHTML = '';
+            dailyAssessmentsOutput.innerHTML = '';
+            weeklyAssessmentOutput.innerHTML = '';
+            downloadWordButton.classList.add('hidden');
+
+            // Select appropriate system prompt based on language
+            let systemPrompt, dailyAssessmentPrompt, weeklyAssessmentPrompt;
+            
+            if (language === 'filipino') {
+                systemPrompt = SYSTEM_PROMPT_FILIPINO;
+                dailyAssessmentPrompt = DAILY_ASSESSMENT_SYSTEM_PROMPT_FILIPINO;
+                weeklyAssessmentPrompt = WEEKLY_ASSESSMENT_SYSTEM_PROMPT_FILIPINO;
+            } else {
+                systemPrompt = SYSTEM_PROMPT_ENGLISH;
+                dailyAssessmentPrompt = DAILY_ASSESSMENT_SYSTEM_PROMPT_ENGLISH;
+                weeklyAssessmentPrompt = WEEKLY_ASSESSMENT_SYSTEM_PROMPT_ENGLISH;
+            }
+
+            const userQuery = `Generate a 5-day Daily Lesson Log (DLL) in ${language === 'filipino' ? 'FILIPINO' : 'ENGLISH'}.
+            Subject: "${subject}"
+            Grade Level: "${gradeLevel}"
+            Quarter: "${quarter}"
+            Content Standard: "${contentStandard}"
+            Performance Standard: "${performanceStandard}"
+            Learning Competency: "${learningCompetency}"
+            Please use the provided standards for the corresponding JSON fields. Automatically infer a suitable Lesson Topic based on these standards and include it in the 'WeeklyTopic' field, and generate the 'DailyLessons' array.
+
+            IMPORTANT: Consider the school context when designing activities:
+            - Public school with limited resources
+            - Homogenous student groups
+            - Limited space for 50 students in the classroom
+            - Only 5 students have internet access (via prepaid data, not daily)
+            - No library, reliance on self-learning modules`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: JSON_SCHEMA
+                },
+            };
+
+            const apiUrl = API_URL + apiKey;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status} ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (!jsonText) {
+                    throw new Error("Received an empty response from the API.");
+                }
+
+                const lessonData = JSON.parse(jsonText);
+                window.latestLessonData = lessonData;
+                renderLessonPlan(lessonData, language);
+                lessonPlanContainer.classList.remove('hidden');
+                downloadWordButton.classList.remove('hidden');
+                
+                // Generate daily assessments after lesson plan
+                await generateDailyAssessments(lessonData, subject, gradeLevel, apiKey, dailyAssessmentPrompt);
+                
+                // Generate weekly assessment after daily assessments
+                await generateWeeklyAssessment(lessonData, subject, gradeLevel, apiKey, weeklyAssessmentPrompt);
+                
+                showMessage('success', language === 'filipino' 
+                    ? 'Matagumpay na nabuo ang Lesson Plan, Daily Assessments, at Weekly Assessment!' 
+                    : 'Lesson Plan, Daily Assessments, and Weekly Assessment successfully generated!');
+
+            } catch (error) {
+                console.error("Lesson Plan Generation Failed:", error);
+                showMessage('error', `Generation failed: ${error.message}`);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Daily assessments generation function
+        async function generateDailyAssessments(lessonData, subject, gradeLevel, apiKey, systemPrompt) {
+            const assessmentQuery = `Generate daily 10-item formative assessments for each day of the week based on the following lesson plan:
+            Subject: ${subject}
+            Grade Level: ${gradeLevel}
+            Weekly Topic: ${lessonData.WeeklyStandards.WeeklyTopic}
+            
+            Daily Objectives:
+            ${lessonData.DailyLessons.map(day => `${day.Day}: ${day.DailyObjective}`).join('\n')}
+            
+            For each day (Monday to Friday), create:
+            - 10 multiple choice questions specifically assessing that day's objective
+            - Clear instructions for students
+            - Complete answer key
+            - Detailed scoring rubric
+            - Appropriate question types for formative assessment
+
+            IMPORTANT: Consider the school context:
+            - Public school with limited resources
+            - Homogenous student groups
+            - Limited classroom space
+            - Minimal internet access
+            - No library, reliance on self-learning modules`;
+
+            const assessmentPayload = {
+                contents: [{ parts: [{ text: assessmentQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: DAILY_ASSESSMENT_SCHEMA
+                },
+            };
+
+            try {
+                const response = await fetch(API_URL + apiKey, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(assessmentPayload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Assessment API Error: ${response.status}`);
+                }
+
+                const result = await response.json();
+                const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (!jsonText) {
+                    throw new Error("Received an empty assessment response from the API.");
+                }
+
+                const assessmentData = JSON.parse(jsonText);
+                window.latestDailyAssessments = assessmentData;
+                renderDailyAssessments(assessmentData);
+                dailyAssessmentsContainer.classList.remove('hidden');
+
+            } catch (error) {
+                console.error("Daily Assessment Generation Failed:", error);
+                showMessage('error', `Daily assessment generation failed: ${error.message}`);
+            }
+        }
+
+        // Weekly assessment generation function
+        async function generateWeeklyAssessment(lessonData, subject, gradeLevel, apiKey, systemPrompt) {
+            const weeklyAssessmentQuery = `Generate a comprehensive 40-item multiple choice formative assessment for the entire week based on:
+            Subject: ${subject}
+            Grade Level: ${gradeLevel}
+            Weekly Topic: ${lessonData.WeeklyStandards.WeeklyTopic}
+            Content Standard: ${lessonData.WeeklyStandards.ContentStandard}
+            Performance Standard: ${lessonData.WeeklyStandards.PerformanceStandard}
+            Learning Competency: ${lessonData.WeeklyStandards.LearningCompetency}
+            
+            Daily Objectives Covered:
+            ${lessonData.DailyLessons.map(day => `${day.Day}: ${day.DailyObjective}`).join('\n')}
+            
+            Requirements:
+            - 40 multiple choice questions covering all weekly objectives
+            - Mix of question contexts: situational, personal, societal, and global
+            - Alignment with PISA 2024 Framework domains
+            - Comprehensive answer key
+            - Detailed scoring rubric with proficiency levels
+
+            IMPORTANT: Consider the school context:
+            - Public school with limited resources
+            - Homogenous student groups
+            - Limited classroom space
+            - Minimal internet access
+            - No library, reliance on self-learning modules
+
+            Question Distribution:
+            - 10 situational questions (real-world scenarios)
+            - 10 personal questions (self-reflection and application)
+            - 10 societal questions (community and societal impact)
+            - 10 global questions (international perspective and global competence)
+
+            PISA 2024 Framework Domains to cover:
+            - Reading Literacy
+            - Mathematical Literacy  
+            - Scientific Literacy
+            - Global Competence
+            - Creative Thinking
+            - Learning in Digital World`;
+
+            const weeklyAssessmentPayload = {
+                contents: [{ parts: [{ text: weeklyAssessmentQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: WEEKLY_ASSESSMENT_SCHEMA
+                },
+            };
+
+            try {
+                const response = await fetch(API_URL + apiKey, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(weeklyAssessmentPayload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Weekly Assessment API Error: ${response.status}`);
+                }
+
+                const result = await response.json();
+                const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (!jsonText) {
+                    throw new Error("Received an empty weekly assessment response from the API.");
+                }
+
+                const weeklyAssessmentData = JSON.parse(jsonText);
+                window.latestWeeklyAssessment = weeklyAssessmentData;
+                renderWeeklyAssessment(weeklyAssessmentData);
+                weeklyAssessmentContainer.classList.remove('hidden');
+
+            } catch (error) {
+                console.error("Weekly Assessment Generation Failed:", error);
+                showMessage('error', `Weekly assessment generation failed: ${error.message}`);
+            }
+        }
+        
+        // Download to MS Word Function
+        window.convertToWord = function() {
+            const data = window.latestLessonData;
+            if (!data) {
+                showMessage('error', 'No Lesson Plan generated to download. Please generate the Lesson Plan first.');
+                return;
+            }
+
+            const subject = subjectInput.value.trim().replace(/[^a-z0-9]/gi, '_').toLowerCase().slice(0, 10);
+            const weeklyTopic = data.WeeklyStandards?.WeeklyTopic || "Lesson Plan";
+            const filename = `${subject}_${weeklyTopic.replace(/[^a-z0-9]/gi, '_').toLowerCase().slice(0, 20)}_DLL.doc`;
+            const content = lessonPlanOutput.innerHTML;
+
+            const htmlContent = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>${weeklyTopic}</title>
+                    <!--[if gte mso 9]><xml>
+                        <w:WordDocument>
+                            <w:View>Print</w:View>
+                            <w:Zoom>100</w:Zoom>
+                            <w:DoNotOptimizeForBrowser/>
+                        </w:WordDocument>
+                    </xml><![endif]-->
+                    <style>
+                        body { font-family: "Arial", sans-serif; font-size: 11pt; }
+                        table { border-collapse: collapse; width: 100%; border: 1pt solid #000; margin-bottom: 20pt; }
+                        th, td { border: 1pt solid #000; padding: 8pt; vertical-align: top; font-size: 10pt; line-height: 1.3; }
+                        thead th { background-color: #d1fae5; font-weight: bold; text-align: center; }
+                        .prelim-activities-cell { background-color: #f0fdf4; font-weight: bold; width: 250px; min-width: 250px; max-width: 250px; word-break: break-word; }
+                        .p-4 { padding: 12pt; }
+                        .text-lg { font-size: 14pt; }
+                        .font-bold { font-weight: bold; }
+                        .school-logo { border: 2px solid #16a34a; padding: 15pt; background: white; text-align: center; margin-bottom: 20pt; }
+                        .logo-title { font-weight: bold; font-size: 14pt; color: #166534; text-transform: uppercase; margin-bottom: 8pt; }
+                        .logo-subtitle { font-size: 10pt; color: #15803d; margin-bottom: 4pt; }
+                        .logo-year { font-weight: bold; color: #16a34a; font-size: 12pt; }
+                        .logo-divider { border-top: 1px solid #16a34a; margin: 6pt 0; }
+                        @page Section1 { size: 13in 8.5in; mso-page-orientation: landscape; margin: 0.75in 0.75in 0.75in 0.75in; mso-header-margin:.5in; mso-footer-margin:.5in; mso-paper-source:0; }
+                        div.Section1 { page:Section1; }
+                    </style>
+                </head>
+                <body>
+                    <div class="Section1">
+                        <div class="school-logo">
+                            <div class="logo-title">MATAAS NA PAARALANG PAMBANSA NG PABLO LORENZO</div>
+                            <div class="logo-divider"></div>
+                            <table style="width: 100%; margin-top: 10pt;">
+                                <tr>
+                                    <td style="text-align: center; width: 50%;">
+                                        <div class="logo-subtitle">FOUNDED</div>
+                                        <div class="logo-year">1973</div>
+                                    </td>
+                                    <td style="text-align: center; width: 50%;">
+                                        <div class="logo-subtitle">RENAMED</div>
+                                        <div class="logo-year">1997</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        ${content}
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob([htmlContent], { type: "application/msword;charset=utf-8" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Download Daily Assessment Function
+        window.downloadDailyAssessment = function(day) {
+            if (!window.latestDailyAssessments) {
+                showMessage('error', 'No daily assessments generated to download. Please generate the lesson plan first.');
+                return;
+            }
+
+            const assessments = window.latestDailyAssessments.DailyAssessments;
+            const dailyAssessment = assessments.find(ass => ass.Day === day);
+
+            if (!dailyAssessment) {
+                showMessage('error', `No assessment found for ${day}.`);
+                return;
+            }
+
+            const assessment = dailyAssessment.Assessment;
+            const subject = subjectInput.value.trim().replace(/[^a-z0-9]/gi, '_').toLowerCase().slice(0, 10);
+            const filename = `${subject}_${day}_assessment.doc`;
+            
+            let htmlContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${assessment.Title} - ${dailyAssessment.Day}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.4; }
+                        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+                        .school-info { margin-bottom: 20px; }
+                        .question { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+                        .options { margin-left: 20px; }
+                        .option { margin: 5px 0; }
+                        .rubric-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        .rubric-table th, .rubric-table td { border: 1px solid #333; padding: 8px; text-align: left; }
+                        .rubric-table th { background-color: #f0f0f0; }
+                        .answer-key { margin-top: 30px; }
+                        .page-break { page-break-after: always; }
+                        .student-info { margin-bottom: 20px; }
+                        .student-info table { width: 100%; border-collapse: collapse; }
+                        .student-info td { padding: 5px; border: 1px solid #ccc; }
+                        @media print {
+                            .no-print { display: none; }
+                            .question { page-break-inside: avoid; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="school-info">
+                            <h2>MATAAS NA PAARALANG PAMBANSA NG PABLO LORENZO</h2>
+                            <h3>${assessment.Title}</h3>
+                            <h4>${dailyAssessment.Day} - ${subjectInput.value}</h4>
+                            <p><strong>Grade Level:</strong> ${gradeLevelInput.value} | <strong>Quarter:</strong> ${quarterInput.value}</p>
+                        </div>
+                    </div>
+
+                    <div class="student-info">
+                        <table>
+                            <tr>
+                                <td width="25%"><strong>Name:</strong></td>
+                                <td width="25%"><strong>Section:</strong></td>
+                                <td width="25%"><strong>Date:</strong></td>
+                                <td width="25%"><strong>Score:</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="instructions">
+                        <p><strong>Instructions:</strong> ${assessment.Instructions}</p>
+                        <p><strong>Daily Objective:</strong> ${dailyAssessment.DailyObjective}</p>
+                    </div>
+
+                    <div class="questions">
+            `;
+
+            // Add questions
+            assessment.Questions.forEach((q, index) => {
+                htmlContent += `
+                    <div class="question">
+                        <p><strong>${q.QuestionNumber}. ${q.Question}</strong></p>
+                        <div class="options">
+                            <div class="option">A. ${q.Options.A}</div>
+                            <div class="option">B. ${q.Options.B}</div>
+                            <div class="option">C. ${q.Options.C}</div>
+                            <div class="option">D. ${q.Options.D}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            htmlContent += `
+                    </div>
+
+                    <div class="page-break"></div>
+
+                    <div class="answer-key">
+                        <h2>Answer Key - ${dailyAssessment.Day}</h2>
+                        <table class="rubric-table">
+                            <thead>
+                                <tr>
+                                    <th>Question</th>
+                                    <th>Correct Answer</th>
+                                    <th>Question</th>
+                                    <th>Correct Answer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            for (let i = 0; i < assessment.AnswerKey.length; i += 2) {
+                htmlContent += '<tr>';
+                htmlContent += `<td>${assessment.AnswerKey[i].QuestionNumber}</td>`;
+                htmlContent += `<td>${assessment.AnswerKey[i].CorrectAnswer}</td>`;
+                if (assessment.AnswerKey[i + 1]) {
+                    htmlContent += `<td>${assessment.AnswerKey[i + 1].QuestionNumber}</td>`;
+                    htmlContent += `<td>${assessment.AnswerKey[i + 1].CorrectAnswer}</td>`;
+                } else {
+                    htmlContent += '<td></td><td></td>';
+                }
+                htmlContent += '</tr>';
+            }
+
+            htmlContent += `
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="rubric">
+                        <h2>Scoring Rubric</h2>
+                        <table class="rubric-table">
+                            <thead>
+                                <tr>
+                                    <th>Score Range</th>
+                                    <th>Proficiency Level</th>
+                                    <th>Interpretation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            assessment.Rubric.ScoreInterpretation.forEach(range => {
+                htmlContent += `
+                    <tr>
+                        <td>${range.ScoreRange}</td>
+                        <td>${range.ProficiencyLevel}</td>
+                        <td>${range.Interpretation}</td>
+                    </tr>
+                `;
+            });
+
+            htmlContent += `
+                            </tbody>
+                        </table>
+                        <p><strong>Grading Scale:</strong> ${assessment.Rubric.GradingScale}</p>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob([htmlContent], { type: "application/msword;charset=utf-8" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Download Weekly Assessment Function
+        window.downloadWeeklyAssessment = function() {
+            if (!window.latestWeeklyAssessment) {
+                showMessage('error', 'No weekly assessment generated to download. Please generate the lesson plan first.');
+                return;
+            }
+
+            const assessment = window.latestWeeklyAssessment.WeeklyAssessment;
+            const subject = subjectInput.value.trim().replace(/[^a-z0-9]/gi, '_').toLowerCase().slice(0, 10);
+            const filename = `${subject}_weekly_assessment.doc`;
+            
+            let htmlContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${assessment.Title}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.4; }
+                        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+                        .school-info { margin-bottom: 20px; }
+                        .question { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+                        .options { margin-left: 20px; }
+                        .option { margin: 5px 0; }
+                        .rubric-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        .rubric-table th, .rubric-table td { border: 1px solid #333; padding: 8px; text-align: left; }
+                        .rubric-table th { background-color: #f0f0f0; }
+                        .answer-key { margin-top: 30px; }
+                        .page-break { page-break-after: always; }
+                        .student-info { margin-bottom: 20px; }
+                        .student-info table { width: 100%; border-collapse: collapse; }
+                        .student-info td { padding: 5px; border: 1px solid #ccc; }
+                        .question-type { font-style: italic; color: #666; font-size: 0.9em; }
+                        @media print {
+                            .no-print { display: none; }
+                            .question { page-break-inside: avoid; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="school-info">
+                            <h2>MATAAS NA PAARALANG PAMBANSA NG PABLO LORENZO</h2>
+                            <h3>${assessment.Title}</h3>
+                            <h4>Weekly Assessment - ${subjectInput.value}</h4>
+                            <p><strong>Grade Level:</strong> ${gradeLevelInput.value} | <strong>Quarter:</strong> ${quarterInput.value}</p>
+                        </div>
+                    </div>
+
+                    <div class="student-info">
+                        <table>
+                            <tr>
+                                <td width="25%"><strong>Name:</strong></td>
+                                <td width="25%"><strong>Section:</strong></td>
+                                <td width="25%"><strong>Date:</strong></td>
+                                <td width="25%"><strong>Score:</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="instructions">
+                        <p><strong>Instructions:</strong> ${assessment.Instructions}</p>
+                        <p><strong>Total Items:</strong> 40 | <strong>Time Allotment:</strong> 60 minutes</p>
+                    </div>
+
+                    <div class="questions">
+            `;
+
+            // Add questions in two columns
+            assessment.Questions.forEach((q, index) => {
+                if (index === 20) {
+                    htmlContent += '<div class="page-break"></div>';
+                }
+                
+                htmlContent += `
+                    <div class="question">
+                        <p><strong>${q.QuestionNumber}. ${q.Question}</strong></p>
+                        <div class="options">
+                            <div class="option">A. ${q.Options.A}</div>
+                            <div class="option">B. ${q.Options.B}</div>
+                            <div class="option">C. ${q.Options.C}</div>
+                            <div class="option">D. ${q.Options.D}</div>
+                        </div>
+                        <p class="question-type">Type: ${q.QuestionType} | PISA Domain: ${q.PISADomain}</p>
+                    </div>
+                `;
+            });
+
+            htmlContent += `
+                    </div>
+
+                    <div class="page-break"></div>
+
+                    <div class="answer-key">
+                        <h2>Answer Key - Weekly Assessment</h2>
+                        <table class="rubric-table">
+                            <thead>
+                                <tr>
+                                    <th>Question</th>
+                                    <th>Correct Answer</th>
+                                    <th>Question</th>
+                                    <th>Correct Answer</th>
+                                    <th>Question</th>
+                                    <th>Correct Answer</th>
+                                    <th>Question</th>
+                                    <th>Correct Answer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            for (let i = 0; i < assessment.AnswerKey.length; i += 4) {
+                htmlContent += '<tr>';
+                for (let j = 0; j < 4; j++) {
+                    if (assessment.AnswerKey[i + j]) {
+                        htmlContent += `<td>${assessment.AnswerKey[i + j].QuestionNumber}</td>`;
+                        htmlContent += `<td>${assessment.AnswerKey[i + j].CorrectAnswer}</td>`;
+                    } else {
+                        htmlContent += '<td></td><td></td>';
+                    }
+                }
+                htmlContent += '</tr>';
+            }
+
+            htmlContent += `
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="rubric">
+                        <h2>Scoring Rubric - Weekly Assessment</h2>
+                        <table class="rubric-table">
+                            <thead>
+                                <tr>
+                                    <th>Score Range</th>
+                                    <th>Proficiency Level</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            assessment.Rubric.ScoreRanges.forEach(range => {
+                htmlContent += `
+                    <tr>
+                        <td>${range.Range}</td>
+                        <td>${range.ProficiencyLevel}</td>
+                        <td>${range.Description}</td>
+                    </tr>
+                `;
+            });
+
+            htmlContent += `
+                            </tbody>
+                        </table>
+                        
+                        <h3>Grading Criteria</h3>
+                        <table class="rubric-table">
+                            <thead>
+                                <tr>
+                                    <th>Criterion</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            assessment.Rubric.GradingCriteria.forEach(criterion => {
+                htmlContent += `
+                    <tr>
+                        <td>${criterion.Criterion}</td>
+                        <td>${criterion.Description}</td>
+                    </tr>
+                `;
+            });
+
+            htmlContent += `
+                            </tbody>
+                        </table>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob([htmlContent], { type: "application/msword;charset=utf-8" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Print Daily Assessment Function
+        window.printDailyAssessment = function() {
+            if (!window.latestDailyAssessments) {
+                showMessage('error', 'No daily assessments generated to print. Please generate the lesson plan first.');
+                return;
+            }
+
+            const selectedDay = daySelect.value.toLowerCase();
+            const assessments = window.latestDailyAssessments.DailyAssessments;
+            const dailyAssessment = assessments.find(ass => ass.Day.toLowerCase() === selectedDay.toUpperCase());
+
+            if (!dailyAssessment) {
+                showMessage('error', `No assessment found for ${selectedDay}.`);
+                return;
+            }
+
+            const printWindow = window.open('', '_blank');
+            const assessment = dailyAssessment.Assessment;
+            
+            let printContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${assessment.Title} - ${dailyAssessment.Day}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.4; }
+                        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+                        .school-info { margin-bottom: 20px; }
+                        .question { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+                        .options { margin-left: 20px; }
+                        .option { margin: 5px 0; }
+                        .rubric-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        .rubric-table th, .rubric-table td { border: 1px solid #333; padding: 8px; text-align: left; }
+                        .rubric-table th { background-color: #f0f0f0; }
+                        .answer-key { margin-top: 30px; }
+                        .page-break { page-break-after: always; }
+                        .student-info { margin-bottom: 20px; }
+                        .student-info table { width: 100%; border-collapse: collapse; }
+                        .student-info td { padding: 5px; border: 1px solid #ccc; }
+                        @media print {
+                            .no-print { display: none; }
+                            .question { page-break-inside: avoid; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="school-info">
+                            <h2>MATAAS NA PAARALANG PAMBANSA NG PABLO LORENZO</h2>
+                            <h3>${assessment.Title}</h3>
+                            <h4>${dailyAssessment.Day} - ${subjectInput.value}</h4>
+                            <p><strong>Grade Level:</strong> ${gradeLevelInput.value} | <strong>Quarter:</strong> ${quarterInput.value}</p>
+                        </div>
+                    </div>
+
+                    <div class="student-info">
+                        <table>
+                            <tr>
+                                <td width="25%"><strong>Name:</strong></td>
+                                <td width="25%"><strong>Section:</strong></td>
+                                <td width="25%"><strong>Date:</strong></td>
+                                <td width="25%"><strong>Score:</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="instructions">
+                        <p><strong>Instructions:</strong> ${assessment.Instructions}</p>
+                        <p><strong>Daily Objective:</strong> ${dailyAssessment.DailyObjective}</p>
+                    </div>
+
+                    <div class="questions">
+            `;
+
+            // Add questions
+            assessment.Questions.forEach((q, index) => {
+                printContent += `
+                    <div class="question">
+                        <p><strong>${q.QuestionNumber}. ${q.Question}</strong></p>
+                        <div class="options">
+                            <div class="option">A. ${q.Options.A}</div>
+                            <div class="option">B. ${q.Options.B}</div>
+                            <div class="option">C. ${q.Options.C}</div>
+                            <div class="option">D. ${q.Options.D}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            printContent += `
+                    </div>
+
+                    <div class="page-break"></div>
+
+                    <div class="answer-key">
+                        <h2>Answer Key - ${dailyAssessment.Day}</h2>
+                        <table class="rubric-table">
+                            <thead>
+                                <tr>
+                                    <th>Question</th>
+                                    <th>Correct Answer</th>
+                                    <th>Question</th>
+                                    <th>Correct Answer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            for (let i = 0; i < assessment.AnswerKey.length; i += 2) {
+                printContent += '<tr>';
+                printContent += `<td>${assessment.AnswerKey[i].QuestionNumber}</td>`;
+                printContent += `<td>${assessment.AnswerKey[i].CorrectAnswer}</td>`;
+                if (assessment.AnswerKey[i + 1]) {
+                    printContent += `<td>${assessment.AnswerKey[i + 1].QuestionNumber}</td>`;
+                    printContent += `<td>${assessment.AnswerKey[i + 1].CorrectAnswer}</td>`;
+                } else {
+                    printContent += '<td></td><td></td>';
+                }
+                printContent += '</tr>';
+            }
+
+            printContent += `
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="rubric">
+                        <h2>Scoring Rubric</h2>
+                        <table class="rubric-table">
+                            <thead>
+                                <tr>
+                                    <th>Score Range</th>
+                                    <th>Proficiency Level</th>
+                                    <th>Interpretation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            assessment.Rubric.ScoreInterpretation.forEach(range => {
+                printContent += `
+                    <tr>
+                        <td>${range.ScoreRange}</td>
+                        <td>${range.ProficiencyLevel}</td>
+                        <td>${range.Interpretation}</td>
+                    </tr>
+                `;
+            });
+
+            printContent += `
+                            </tbody>
+                        </table>
+                        <p><strong>Grading Scale:</strong> ${assessment.Rubric.GradingScale}</p>
+                    </div>
+
+                    <div class="no-print" style="margin-top: 20px; text-align: center;">
+                        <button onclick="window.print()" style="padding: 10px 20px; font-size: 16px; margin: 10px;">Print Assessment</button>
+                        <button onclick="window.close()" style="padding: 10px 20px; font-size: 16px; margin: 10px; background-color: #6b7280; color: white; border: none; border-radius: 4px;">Close Window</button>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+        }
+
+        // Print Weekly Assessment Function
+        window.printWeeklyAssessment = function() {
+            if (!window.latestWeeklyAssessment) {
+                showMessage('error', 'No weekly assessment generated to print. Please generate the lesson plan first.');
+                return;
+            }
+
+            const printWindow = window.open('', '_blank');
+            const assessment = window.latestWeeklyAssessment.WeeklyAssessment;
+            
+            let printContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${assessment.Title}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.4; }
+                        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+                        .school-info { margin-bottom: 20px; }
+                        .question { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+                        .options { margin-left: 20px; }
+                        .option { margin: 5px 0; }
+                        .rubric-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        .rubric-table th, .rubric-table td { border: 1px solid #333; padding: 8px; text-align: left; }
+                        .rubric-table th { background-color: #f0f0f0; }
+                        .answer-key { margin-top: 30px; }
+                        .page-break { page-break-after: always; }
+                        .student-info { margin-bottom: 20px; }
+                        .student-info table { width: 100%; border-collapse: collapse; }
+                        .student-info td { padding: 5px; border: 1px solid #ccc; }
+                        .question-type { font-style: italic; color: #666; font-size: 0.9em; }
+                        @media print {
+                            .no-print { display: none; }
+                            .question { page-break-inside: avoid; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="school-info">
+                            <h2>MATAAS NA PAARALANG PAMBANSA NG PABLO LORENZO</h2>
+                            <h3>${assessment.Title}</h3>
+                            <h4>Weekly Assessment - ${subjectInput.value}</h4>
+                            <p><strong>Grade Level:</strong> ${gradeLevelInput.value} | <strong>Quarter:</strong> ${quarterInput.value}</p>
+                        </div>
+                    </div>
+
+                    <div class="student-info">
+                        <table>
+                            <tr>
+                                <td width="25%"><strong>Name:</strong></td>
+                                <td width="25%"><strong>Section:</strong></td>
+                                <td width="25%"><strong>Date:</strong></td>
+                                <td width="25%"><strong>Score:</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="instructions">
+                        <p><strong>Instructions:</strong> ${assessment.Instructions}</p>
+                        <p><strong>Total Items:</strong> 40 | <strong>Time Allotment:</strong> 60 minutes</p>
+                    </div>
+
+                    <div class="questions">
+            `;
+
+            // Add questions in two columns
+            assessment.Questions.forEach((q, index) => {
+                if (index === 20) {
+                    printContent += '<div class="page-break"></div>';
+                }
+                
+                printContent += `
+                    <div class="question">
+                        <p><strong>${q.QuestionNumber}. ${q.Question}</strong></p>
+                        <div class="options">
+                            <div class="option">A. ${q.Options.A}</div>
+                            <div class="option">B. ${q.Options.B}</div>
+                            <div class="option">C. ${q.Options.C}</div>
+                            <div class="option">D. ${q.Options.D}</div>
+                        </div>
+                        <p class="question-type">Type: ${q.QuestionType} | PISA Domain: ${q.PISADomain}</p>
+                    </div>
+                `;
+            });
+
+            printContent += `
+                    </div>
+
+                    <div class="page-break"></div>
+
+                    <div class="answer-key">
+                        <h2>Answer Key - Weekly Assessment</h2>
+                        <table class="rubric-table">
+                            <thead>
+                                <tr>
+                                    <th>Question</th>
+                                    <th>Correct Answer</th>
+                                    <th>Question</th>
+                                    <th>Correct Answer</th>
+                                    <th>Question</th>
+                                    <th>Correct Answer</th>
+                                    <th>Question</th>
+                                    <th>Correct Answer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            for (let i = 0; i < assessment.AnswerKey.length; i += 4) {
+                printContent += '<tr>';
+                for (let j = 0; j < 4; j++) {
+                    if (assessment.AnswerKey[i + j]) {
+                        printContent += `<td>${assessment.AnswerKey[i + j].QuestionNumber}</td>`;
+                        printContent += `<td>${assessment.AnswerKey[i + j].CorrectAnswer}</td>`;
+                    } else {
+                        printContent += '<td></td><td></td>';
+                    }
+                }
+                printContent += '</tr>';
+            }
+
+            printContent += `
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="rubric">
+                        <h2>Scoring Rubric - Weekly Assessment</h2>
+                        <table class="rubric-table">
+                            <thead>
+                                <tr>
+                                    <th>Score Range</th>
+                                    <th>Proficiency Level</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            assessment.Rubric.ScoreRanges.forEach(range => {
+                printContent += `
+                    <tr>
+                        <td>${range.Range}</td>
+                        <td>${range.ProficiencyLevel}</td>
+                        <td>${range.Description}</td>
+                    </tr>
+                `;
+            });
+
+            printContent += `
+                            </tbody>
+                        </table>
+                        
+                        <h3>Grading Criteria</h3>
+                        <table class="rubric-table">
+                            <thead>
+                                <tr>
+                                    <th>Criterion</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            assessment.Rubric.GradingCriteria.forEach(criterion => {
+                printContent += `
+                    <tr>
+                        <td>${criterion.Criterion}</td>
+                        <td>${criterion.Description}</td>
+                    </tr>
+                `;
+            });
+
+            printContent += `
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="no-print" style="margin-top: 20px; text-align: center;">
+                        <button onclick="window.print()" style="padding: 10px 20px; font-size: 16px; margin: 10px;">Print Assessment</button>
+                        <button onclick="window.close()" style="padding: 10px 20px; font-size: 16px; margin: 10px; background-color: #6b7280; color: white; border: none; border-radius: 4px;">Close Window</button>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+        }
+
+        // Print Daily Assessment for Specific Day
+        window.printDailyAssessmentForDay = function(day) {
+            if (!window.latestDailyAssessments) {
+                showMessage('error', 'No daily assessments generated to print. Please generate the lesson plan first.');
+                return;
+            }
+
+            const assessments = window.latestDailyAssessments.DailyAssessments;
+            const dailyAssessment = assessments.find(ass => ass.Day === day);
+
+            if (!dailyAssessment) {
+                showMessage('error', `No assessment found for ${day}.`);
+                return;
+            }
+
+            const printWindow = window.open('', '_blank');
+            const assessment = dailyAssessment.Assessment;
+            
+            let printContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${assessment.Title} - ${dailyAssessment.Day}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.4; }
+                        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+                        .school-info { margin-bottom: 20px; }
+                        .question { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+                        .options { margin-left: 20px; }
+                        .option { margin: 5px 0; }
+                        .rubric-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        .rubric-table th, .rubric-table td { border: 1px solid #333; padding: 8px; text-align: left; }
+                        .rubric-table th { background-color: #f0f0f0; }
+                        .answer-key { margin-top: 30px; }
+                        .page-break { page-break-after: always; }
+                        .student-info { margin-bottom: 20px; }
+                        .student-info table { width: 100%; border-collapse: collapse; }
+                        .student-info td { padding: 5px; border: 1px solid #ccc; }
+                        @media print {
+                            .no-print { display: none; }
+                            .question { page-break-inside: avoid; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="school-info">
+                            <h2>MATAAS NA PAARALANG PAMBANSA NG PABLO LORENZO</h2>
+                            <h3>${assessment.Title}</h3>
+                            <h4>${dailyAssessment.Day} - ${subjectInput.value}</h4>
+                            <p><strong>Grade Level:</strong> ${gradeLevelInput.value} | <strong>Quarter:</strong> ${quarterInput.value}</p>
+                        </div>
+                    </div>
+
+                    <div class="student-info">
+                        <table>
+                            <tr>
+                                <td width="25%"><strong>Name:</strong></td>
+                                <td width="25%"><strong>Section:</strong></td>
+                                <td width="25%"><strong>Date:</strong></td>
+                                <td width="25%"><strong>Score:</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="instructions">
+                        <p><strong>Instructions:</strong> ${assessment.Instructions}</p>
+                        <p><strong>Daily Objective:</strong> ${dailyAssessment.DailyObjective}</p>
+                    </div>
+
+                    <div class="questions">
+            `;
+
+            // Add questions
+            assessment.Questions.forEach((q, index) => {
+                printContent += `
+                    <div class="question">
+                        <p><strong>${q.QuestionNumber}. ${q.Question}</strong></p>
+                        <div class="options">
+                            <div class="option">A. ${q.Options.A}</div>
+                            <div class="option">B. ${q.Options.B}</div>
+                            <div class="option">C. ${q.Options.C}</div>
+                            <div class="option">D. ${q.Options.D}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            printContent += `
+                    </div>
+
+                    <div class="page-break"></div>
+
+                    <div class="answer-key">
+                        <h2>Answer Key - ${dailyAssessment.Day}</h2>
+                        <table class="rubric-table">
+                            <thead>
+                                <tr>
+                                    <th>Question</th>
+                                    <th>Correct Answer</th>
+                                    <th>Question</th>
+                                    <th>Correct Answer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            for (let i = 0; i < assessment.AnswerKey.length; i += 2) {
+                printContent += '<tr>';
+                printContent += `<td>${assessment.AnswerKey[i].QuestionNumber}</td>`;
+                printContent += `<td>${assessment.AnswerKey[i].CorrectAnswer}</td>`;
+                if (assessment.AnswerKey[i + 1]) {
+                    printContent += `<td>${assessment.AnswerKey[i + 1].QuestionNumber}</td>`;
+                    printContent += `<td>${assessment.AnswerKey[i + 1].CorrectAnswer}</td>`;
+                } else {
+                    printContent += '<td></td><td></td>';
+                }
+                printContent += '</tr>';
+            }
+
+            printContent += `
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="rubric">
+                        <h2>Scoring Rubric</h2>
+                        <table class="rubric-table">
+                            <thead>
+                                <tr>
+                                    <th>Score Range</th>
+                                    <th>Proficiency Level</th>
+                                    <th>Interpretation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            assessment.Rubric.ScoreInterpretation.forEach(range => {
+                printContent += `
+                    <tr>
+                        <td>${range.ScoreRange}</td>
+                        <td>${range.ProficiencyLevel}</td>
+                        <td>${range.Interpretation}</td>
+                    </tr>
+                `;
+            });
+
+            printContent += `
+                            </tbody>
+                        </table>
+                        <p><strong>Grading Scale:</strong> ${assessment.Rubric.GradingScale}</p>
+                    </div>
+
+                    <div class="no-print" style="margin-top: 20px; text-align: center;">
+                        <button onclick="window.print()" style="padding: 10px 20px; font-size: 16px; margin: 10px;">Print Assessment</button>
+                        <button onclick="window.close()" style="padding: 10px 20px; font-size: 16px; margin: 10px; background-color: #6b7280; color: white; border: none; border-radius: 4px;">Close Window</button>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+        }
+
+        // Output Rendering Function
+        function renderLessonPlan(data, language) {
+            const { WeeklyStandards, DailyLessons } = data;
+            const subject = subjectInput.value.trim();
+            const gradeLevel = gradeLevelInput.value.trim();
+            const quarter = quarterInput.value.trim();
+
+            // Language-specific labels
+            const labels = {
+                english: {
+                    title: "Daily Lesson Log (DLL) - Weekly Plan",
+                    subject: "Subject",
+                    gradeLevel: "Grade Level",
+                    quarter: "Quarter",
+                    objectives: "I. OBJECTIVES (WEEKLY STANDARDS)",
+                    contentStandard: "Content Standard",
+                    performanceStandard: "Performance Standard",
+                    learningCompetency: "Learning Competency",
+                    content: "II. CONTENT",
+                    lessonTopic: "Lesson Topic",
+                    procedure: "IV. PROCEDURE",
+                    dailyObjective: "Objectives (Daily Objective)",
+                    integration: "INTEGRATION",
+                    learningResources: "III. LEARNING RESOURCES",
+                    preliminaryActivities: "Preliminary Activities",
+                    drill: "A. DRILL/REVIEW",
+                    review: "B. REVIEW OF PREVIOUS LESSON AND/OR INTRODUCTION OF NEW LESSON",
+                    examples: "C. ESTABLISHING A PURPOSE FOR THE LESSON",
+                    discussion1: "D. PRESENTING EXAMPLES/INSTANCES OF THE NEW LESSON",
+                    discussion2: "E. DISCUSSING NEW CONCEPTS AND PRACTICING NEW SKILLS #1",
+                    mastery: "F. DEVELOPING MASTERY (Leads to Formative Assessment)",
+                    generalization: "G. FINDING PRACTICAL APPLICATIONS OF CONCEPTS AND SKILLS IN DAILY LIVING",
+                    application: "H. MAKING GENERALIZATIONS AND ABSTRACTIONS ABOUT THE LESSON",
+                    evaluation: "I. EVALUATING LEARNING"
+                },
+                filipino: {
+                    title: "Daily Lesson Log (DLL) - Lingguhang Plano",
+                    subject: "Asignatura",
+                    gradeLevel: "Antas ng Baitang",
+                    quarter: "Markahan",
+                    objectives: "I. MGA LAYUNIN (MGA PAMANTAYAN SA LINGGO)",
+                    contentStandard: "Pamantayan sa Nilalaman",
+                    performanceStandard: "Pamantayan sa Pagganap",
+                    learningCompetency: "Kompetensi sa Pagkatuto",
+                    content: "II. NILALAMAN",
+                    lessonTopic: "Paksa ng Aralin",
+                    procedure: "IV. PAMAMARAAN",
+                    dailyObjective: "Mga Layunin (Pang-araw-araw na Layunin)",
+                    integration: "PAGKAKAISA",
+                    learningResources: "III. MGA KAGAMITANG PANTURO",
+                    preliminaryActivities: "Mga Paunang Gawain",
+                    drill: "A. DRILL/PAGBABALIK-ARAL",
+                    review: "B. PAGBABALIK-ARAL SA NAKARAANG ARALIN AT/O PAGPAPAKILALA NG BAGONG ARALIN",
+                    examples: "C. PAGLALAGAY NG LAYUNIN PARA SA ARALIN",
+                    discussion1: "D. PAGPAPAKITA NG MGA HALIMBAWA/INSTANSYA NG BAGONG ARALIN",
+                    discussion2: "E. PAGTATALAKAY NG MGA BAGONG KONSEPTO AT PAGSASANAY NG MGA BAGONG KASANAYAN #1",
+                    mastery: "F. PAGPAPAUNLAD NG KAHUSAYAN (Nagdudulot sa Formative Assessment)",
+                    generalization: "G. PAGHAHANAP NG PRAKTIKAL NA APLIKASYON NG MGA KONSEPTO AT KASANAYAN SA PANG-ARAW-ARAW NA BUHAY",
+                    application: "H. PAGGAWA NG MGA PANGKALAHATAN AT ABSTRAKSYON TUNGKOL SA ARALIN",
+                    evaluation: "I. PAGTATASA NG PAGKATUTO"
+                }
+            };
+
+            const langLabels = labels[language] || labels.english;
+
+            let html = `
+                <div class="p-4 mb-6 bg-green-50 rounded-lg border border-green-200">
+                    <h2 class="text-xl font-bold text-green-800 mb-4">${langLabels.title}</h2>
+                    <p class="mb-1 text-sm"><strong class="w-48 inline-block">${langLabels.subject}:</strong> <span class="font-semibold">${subject}</span></p>
+                    <p class="mb-1 text-sm"><strong class="w-48 inline-block">${langLabels.gradeLevel}:</strong> <span class="font-semibold">${gradeLevel}</span></p>
+                    <p class="mb-4 text-sm"><strong class="w-48 inline-block">${langLabels.quarter}:</strong> <span class="font-semibold">${quarter}</span></p>
+                    
+                    <h3 class="text-lg font-bold text-green-700 mb-2 border-t pt-2 border-green-300">${langLabels.objectives}</h3>
+                    <p class="mb-1 text-sm"><strong class="w-48 inline-block">${langLabels.contentStandard}:</strong> ${WeeklyStandards.ContentStandard || 'N/A'}</p>
+                    <p class="mb-1 text-sm"><strong class="w-48 inline-block">${langLabels.performanceStandard}:</strong> ${WeeklyStandards.PerformanceStandard || 'N/A'}</p>
+                    <p class="mb-1 text-sm"><strong class="w-48 inline-block">${langLabels.learningCompetency}:</strong> ${WeeklyStandards.LearningCompetency || 'N/A'}</p>
+                    
+                    <h3 class="text-lg font-bold text-green-700 mt-4 mb-2 border-t pt-2 border-green-300">${langLabels.content}</h3>
+                    <p class="text-sm"><strong class="w-48 inline-block">${langLabels.lessonTopic}:</strong> ${WeeklyStandards.WeeklyTopic || 'N/A'}</p>
+                </div>
+
+                <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-300 bg-white">
+                    <thead class="bg-green-100">
+                        <tr>
+                            <th class="px-3 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider w-1/4 min-w-[250px]">
+                                ${langLabels.procedure}
+                            </th>
+                            ${DailyLessons.map(day => `
+                                <th class="px-3 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider border-l border-gray-300 min-w-[200px]">
+                                    ${day.Day}
+                                </th>
+                            `).join('')}
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 text-sm">
+            `;
+
+            html += `
+                <tr class="hover:bg-gray-50">
+                    <td class="prelim-activities-cell font-bold text-green-600">${langLabels.dailyObjective}</td>
+                    ${DailyLessons.map(day => `<td class="p-3 border-l border-gray-200">${day.DailyObjective}</td>`).join('')}
+                </tr>
+                <tr class="hover:bg-gray-50">
+                    <td class="prelim-activities-cell font-bold text-green-600">${langLabels.integration}</td>
+                    ${DailyLessons.map(day => `<td class="p-3 border-l border-gray-200">${day.Integration}</td>`).join('')}
+                </tr>
+                <tr class="hover:bg-gray-50">
+                    <td class="prelim-activities-cell font-bold text-green-600">${langLabels.learningResources}</td>
+                    ${DailyLessons.map(day => `<td class="p-3 border-l border-gray-200">${day.Materials}</td>`).join('')}
+                </tr>
+            `;
+
+            const standardPrelim = language === 'filipino' 
+                ? `1. Panalangin<br>2. Pagbati<br>3. Pamamahala sa Silid-aralan<br>4. Pagsusuri ng Pagdalo<br>5. Pagtatakda ng mga Pamantayan`
+                : `1. Opening Prayer<br>2. Greetings<br>3. Classroom Management<br>4. Attendance Checking<br>5. Setting of Standards`;
+                
+            html += `
+                <tr class="bg-gray-100">
+                    <td class="prelim-activities-cell font-bold text-gray-800">${langLabels.preliminaryActivities}</td>
+                    <td class="p-3 border-l border-gray-200 text-xs text-gray-600 italic bg-gray-50" colspan="5">${standardPrelim} (Standardized)</td>
+                </tr>
+            `;
+
+            const procedureSteps = [
+                { key: 'Drill', label: langLabels.drill },
+                { key: 'ReviewAndPresentation', label: langLabels.review },
+                { key: 'Examples', label: langLabels.examples },
+                { key: 'Discussion1', label: langLabels.discussion1 },
+                { key: 'Discussion2', label: langLabels.discussion2 },
+                { key: 'DevelopingMastery', label: langLabels.mastery },
+                { key: 'Generalization', label: langLabels.generalization },
+                { key: 'Application', label: langLabels.application },
+                { key: 'Evaluation', label: langLabels.evaluation },
+            ];
+
+            procedureSteps.forEach(step => {
+                html += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="prelim-activities-cell font-medium text-gray-800">${step.label}</td>
+                        ${DailyLessons.map(day => {
+                            const content = (day.Procedure[step.key] || 'No activity specified.').replace(/<br>/g, '<w:br/>');
+                            return `<td class="p-3 border-l border-gray-200">${content}</td>`;
+                        }).join('')}
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+                </div>
+            `;
+
+            lessonPlanOutput.innerHTML = html;
+        }
+
+        // Daily Assessments Rendering Function
+        function renderDailyAssessments(data) {
+            const assessments = data.DailyAssessments;
+            let html = '';
+
+            assessments.forEach(dailyAssessment => {
+                const assessment = dailyAssessment.Assessment;
+                html += `
+                    <div class="daily-assessment-section" id="assessment-${dailyAssessment.Day.toLowerCase()}">
+                        <h3 class="text-lg font-bold text-blue-800 mb-4">${dailyAssessment.Day} - ${assessment.Title}</h3>
+                        
+                        <div class="mb-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                            <h4 class="font-bold text-blue-700 mb-2">Daily Objective</h4>
+                            <p class="text-sm">${dailyAssessment.DailyObjective}</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="font-bold text-green-700 mb-2">Instructions</h4>
+                            <p class="text-sm">${assessment.Instructions}</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-4 mb-6">
+                            <h4 class="font-bold text-green-700">Assessment Questions</h4>
+                            ${assessment.Questions.map(q => `
+                                <div class="assessment-item">
+                                    <p class="font-medium mb-2">${q.QuestionNumber}. ${q.Question}</p>
+                                    <div class="assessment-options">
+                                        <div class="assessment-option">A. ${q.Options.A}</div>
+                                        <div class="assessment-option">B. ${q.Options.B}</div>
+                                        <div class="assessment-option">C. ${q.Options.C}</div>
+                                        <div class="assessment-option">D. ${q.Options.D}</div>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-2">
+                                        <span class="bg-gray-100 px-2 py-1 rounded">Correct Answer: ${q.CorrectAnswer}</span>
+                                        <span class="bg-blue-100 px-2 py-1 rounded ml-2">${q.QuestionType}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <div class="mb-6">
+                            <h4 class="font-bold text-green-700 mb-4">Answer Key</h4>
+                            <div class="grid grid-cols-5 gap-2">
+                                ${assessment.AnswerKey.map(item => `
+                                    <div class="text-center p-2 bg-gray-100 rounded">
+                                        <span class="font-bold">${item.QuestionNumber}</span>: ${item.CorrectAnswer}
+                                    </div>
+                                `).join('')}
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="font-bold text-green-700 mb-4">Scoring Rubric</h4>
+                            <table class="rubric-table">
+                                <thead>
+                                    <tr>
+                                        <th>Score Range</th>
+                                        <th>Proficiency Level</th>
+                                        <th>Interpretation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${assessment.Rubric.ScoreInterpretation.map(range => `
+                                        <tr>
+                                            <td class="font-bold">${range.ScoreRange}</td>
+                                            <td>${range.ProficiencyLevel}</td>
+                                            <td>${range.Interpretation}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                            <p class="mt-2 text-sm"><strong>Grading Scale:</strong> ${assessment.Rubric.GradingScale}</p>
+                        </div>
+
+                        <div class="mt-6 flex justify-center gap-4">
+                            <button onclick="printDailyAssessmentForDay('${dailyAssessment.Day}')" 
+                                class="flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                                </svg>
+                                Print ${dailyAssessment.Day}'s Assessment
+                            </button>
+                            <button onclick="downloadDailyAssessment('${dailyAssessment.Day}')" 
+                                class="flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                </svg>
+                                Download ${dailyAssessment.Day}'s Assessment
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            dailyAssessmentsOutput.innerHTML = html;
+        }
+
+        // Weekly Assessment Rendering Function
+        function renderWeeklyAssessment(data) {
+            const assessment = data.WeeklyAssessment;
+            let html = `
+                <div class="mb-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
+                    <h3 class="text-lg font-bold text-purple-800 mb-2">${assessment.Title}</h3>
+                    <p class="text-sm text-purple-700"><strong>Instructions:</strong> ${assessment.Instructions}</p>
+                    <p class="text-sm text-purple-700"><strong>Total Items:</strong> 40 | <strong>Time Allotment:</strong> 60 minutes</p>
+                </div>
+
+                <div class="weekly-assessment-grid">
+                    <div>
+                        <h4 class="font-bold text-green-700 mb-4">Questions 1-20</h4>
+                        ${assessment.Questions.slice(0, 20).map(q => `
+                            <div class="assessment-item">
+                                <p class="font-medium mb-2">${q.QuestionNumber}. ${q.Question}</p>
+                                <div class="assessment-options">
+                                    <div class="assessment-option">A. ${q.Options.A}</div>
+                                    <div class="assessment-option">B. ${q.Options.B}</div>
+                                    <div class="assessment-option">C. ${q.Options.C}</div>
+                                    <div class="assessment-option">D. ${q.Options.D}</div>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-2">
+                                    <span class="bg-gray-100 px-2 py-1 rounded">Correct Answer: ${q.CorrectAnswer}</span>
+                                    <span class="bg-purple-100 px-2 py-1 rounded ml-2">${q.QuestionType}</span>
+                                    <span class="bg-blue-100 px-2 py-1 rounded ml-2">${q.PISADomain}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-bold text-green-700 mb-4">Questions 21-40</h4>
+                        ${assessment.Questions.slice(20).map(q => `
+                            <div class="assessment-item">
+                                <p class="font-medium mb-2">${q.QuestionNumber}. ${q.Question}</p>
+                                <div class="assessment-options">
+                                    <div class="assessment-option">A. ${q.Options.A}</div>
+                                    <div class="assessment-option">B. ${q.Options.B}</div>
+                                    <div class="assessment-option">C. ${q.Options.C}</div>
+                                    <div class="assessment-option">D. ${q.Options.D}</div>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-2">
+                                    <span class="bg-gray-100 px-2 py-1 rounded">Correct Answer: ${q.CorrectAnswer}</span>
+                                    <span class="bg-purple-100 px-2 py-1 rounded ml-2">${q.QuestionType}</span>
+                                    <span class="bg-blue-100 px-2 py-1 rounded ml-2">${q.PISADomain}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h4 class="font-bold text-green-700 mb-4">Answer Key</h4>
+                    <div class="grid grid-cols-8 gap-2 mb-6">
+                        ${assessment.AnswerKey.map(item => `
+                            <div class="text-center p-2 bg-gray-100 rounded">
+                                <span class="font-bold">${item.QuestionNumber}</span>: ${item.CorrectAnswer}
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <h4 class="font-bold text-green-700 mb-4">Scoring Rubric</h4>
+                    <table class="rubric-table">
+                        <thead>
+                            <tr>
+                                <th>Score Range</th>
+                                <th>Proficiency Level</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${assessment.Rubric.ScoreRanges.map(range => `
+                                <tr>
+                                    <td class="font-bold">${range.Range}</td>
+                                    <td>${range.ProficiencyLevel}</td>
+                                    <td>${range.Description}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <h4 class="font-bold text-green-700 mt-6 mb-4">Grading Criteria</h4>
+                    <table class="rubric-table">
+                        <thead>
+                            <tr>
+                                <th>Criterion</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${assessment.Rubric.GradingCriteria.map(criterion => `
+                                <tr>
+                                    <td class="font-bold">${criterion.Criterion}</td>
+                                    <td>${criterion.Description}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-8 flex justify-center gap-4">
+                    <button onclick="printWeeklyAssessment()" 
+                        class="flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-150 ease-in-out">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                        </svg>
+                        Print Weekly Assessment
+                    </button>
+                    <button onclick="downloadWeeklyAssessment()" 
+                        class="flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        Download Weekly Assessment
+                    </button>
+                </div>
+            `;
+
+            weeklyAssessmentOutput.innerHTML = html;
+        }
+
+        // Initialize application
+        window.onload = () => {
+            // Check for stored API key
+            const storedApiKey = checkStoredApiKey();
+            
+            // Set up event listeners
+            saveApiKeyButton.addEventListener('click', saveApiKey);
+            initialApiKeyInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    saveApiKey();
+                }
+            });
+
+            // Set up language selection
+            setupLanguageSelection();
+
+            // Add event listener for day selection
+            daySelect.addEventListener('change', function() {
+                const selectedDay = this.value;
+                const targetElement = document.getElementById(`assessment-${selectedDay}`);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        };
+    </script>
+</body>
+</html>
